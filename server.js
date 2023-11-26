@@ -16,26 +16,27 @@ const db = knex({
   client: "pg",
   connection: {
     host: "127.0.0.1",
-    port: 5432,
-    user: "postgres",
-    password: "%@XdEj#V+4SpZJcE",
+    user: "",
+    password: "",
     database: "smart-brain",
   },
 });
 
-db.select("*")
-  .from("users")
-  .then((data) => console.log(data));
+// db.select("*")
+//   .from("users")
+//   .then((data) => console.log(data));
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.send(database.users);
+  // res.send(db.users);
+  res.send("TEST");
 });
 
 app.post("/register", (req, res) => {
+  debugger;
   register.handleRegister(db, bcrypt)(req, res);
 });
 
@@ -48,15 +49,20 @@ app.get("/profile/:id", (req, res) => {
 });
 
 app.put("/image", (req, res) => {
+  debugger
+  console.log('HERE IN IMAGE ENDPOINT')
   image.handleImage(req, res, db);
 });
 
 app.post("/imageurl", (req, res) => {
+  debugger
+  console.log('HERE IN IMAGEURL ENDPOINT')
   image.handleApiCall(req, res);
 });
 
-app.listen(3000, () => {
-  console.log("app is running on port 3000");
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`app is running on port ${port}`);
 });
 
 //
